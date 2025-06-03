@@ -123,9 +123,17 @@ def main(args):
                 if label is not None:
                     item['label'] = label
             items.extend(pl_items)
-    
-    with open(args.out_path, 'wb') as f:
-        pickle.dump(items, f)
+
+    items = items[0]
+    base_path = args.out_path
+    with open(f"{base_path}_interface_graph.pkl", "wb") as f:
+        pickle.dump(item["data"], f)
+
+    with open(f"{base_path}_features.pkl", "wb") as f:
+        pickle.dump(item["features"], f)
+
+    with open(f"{base_path}_blocks.json", "w") as f:
+        json.dump(item["blocks"], f, indent=2)
     
     print(f"Finished processing. Total items={len(items)}. Saved to {args.out_path}")
 
