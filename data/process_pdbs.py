@@ -104,7 +104,7 @@ def main(args):
             label = None
         if lig_code is None or lig_code == '' or pd.isna(lig_code):
             # For PP, PDNA, PRNA, Ppeptide interactions
-            item = process_pdb(pdb_file, pdb_id, chain1, chain2, args.interface_dist_th) 
+            item = process_pdb(pdb_file, pdb_id, chain1, chain2, args.interface_dist_th)
             if item is not None:
                 if label is not None:
                     item['label'] = label
@@ -125,27 +125,27 @@ def main(args):
                     item['label'] = label
             items.extend(pl_items)
 
-for i, item in enumerate(items):
-    print(f"Item {i} keys:", item.keys())
-    base_path = os.path.join(args.out_path, f"sample_{i}")
+    for i, item in enumerate(items):
+        print(f"Item {i} keys:", item.keys())
+        base_path = os.path.join(args.out_path, f"sample_{i}")
 
-    with open(f"{base_path}_interface_graph.pkl", "wb") as f:
-        pickle.dump(item["data"], f)
+        with open(f"{base_path}_interface_graph.pkl", "wb") as f:
+            pickle.dump(item["data"], f)
 
-    with open(f"{base_path}_block_to_pdb_indexes.pkl", "wb") as f:
-        pickle.dump(item["block_to_pdb_indexes"], f)
+        with open(f"{base_path}_block_to_pdb_indexes.pkl", "wb") as f:
+            pickle.dump(item["block_to_pdb_indexes"], f)
 
-    if "label" in item:
-        with open(f"{base_path}_label.txt", "w") as f:
-            f.write(str(item["label"]))
+        if "label" in item:
+            with open(f"{base_path}_label.txt", "w") as f:
+                f.write(str(item["label"]))
 
-    if "features" in item and item["features"]:
-        with open(f"{base_path}_features.pkl", "wb") as f:
-            pickle.dump(item["features"], f)
-    else:
-        print(f"No 'features' key found in item {i} — skipping features.pkl")
+        if "features" in item and item["features"]:
+            with open(f"{base_path}_features.pkl", "wb") as f:
+                pickle.dump(item["features"], f)
+        else:
+            print(f"No 'features' key found in item {i} — skipping features.pkl")
 
-print(f"Finished processing. Total items={len(items)}. Saved to {args.out_path}")
+    print(f"Finished processing. Total items={len(items)}. Saved to {args.out_path}")
 
 
 if __name__ == "__main__":
