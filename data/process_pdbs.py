@@ -124,19 +124,29 @@ def main(args):
                     item['label'] = label
             items.extend(pl_items)
 
-    items = items[0]
-    print("Item keys:", item.keys())
-    base_path = args.out_path
+os.makedirs(args.out_path, exist_ok=True)
+
+for i, item in enumerate(items):
+    print(f"Item {i} keys:", item.keys())
+    base_path = os.path.join(args.out_path, f"sample_{i}")
+
     with open(f"{base_path}_interface_graph.pkl", "wb") as f:
         pickle.dump(item["data"], f)
 
-    with open(f"{base_path}_features.pkl", "wb") as f:
-        pickle.dump(item["features"], f)
+    with open(f"{base_path}_block_to_pdb_indexes.pkl", "wb") as f:
+        pickle.dump(item["block_to_pdb_indexes"], f)
 
-    with open(f"{base_path}_blocks.json", "w") as f:
-        json.dump(item["blocks"], f, indent=2)
-    
-    print(f"Finished processing. Total items={len(items)}. Saved to {args.out_path}")
+    if "label" in item:
+        with open(f"{base_path}_label.txt", "w") as f:
+            f.write(str(item["label"]))
+
+    if "features" in item and item["features"]:
+        with open(f"{base_path}_features.pkl", "wb") as f:
+            pickle.dump(item["features"], f)
+    else:
+        print(f"No 'features' key found in item {i} — skipping features.pkl")
+
+print(f"Finished processing. Total items={len(items)}. Saved to {args.out_path}")
 
 
 if __name__ == "__main__":
