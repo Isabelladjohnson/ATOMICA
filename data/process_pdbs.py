@@ -125,6 +125,7 @@ def main(args):
             items.extend(pl_items)
 
     items = items[0]
+    print("Item keys:", item.keys())
     base_path = args.out_path
     with open(f"{base_path}_interface_graph.pkl", "wb") as f:
         pickle.dump(item["data"], f)
