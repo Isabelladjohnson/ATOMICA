@@ -85,6 +85,7 @@ def process_pdb(pdb_file, pdb_id, group1_chains, group2_chains, dist_th):
     }
 
 def main(args):
+    os.makedirs(args.out_path, exist_ok=True)
     data_index_file = pd.read_csv(args.data_index_file)
     items = []
     for _, row in tqdm(data_index_file.iterrows(), total=len(data_index_file)):
@@ -123,8 +124,6 @@ def main(args):
                 if label is not None:
                     item['label'] = label
             items.extend(pl_items)
-
-os.makedirs(args.out_path, exist_ok=True)
 
 for i, item in enumerate(items):
     print(f"Item {i} keys:", item.keys())
